@@ -1,0 +1,39 @@
+name: run
+
+on:
+  #   push:
+  #     branches: [ "master" ]
+  #   pull_request:
+  #     branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Restore cached counter
+      id: cache-counter-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          cache-folder1
+          cache-folder2
+        key: counter-key
+    - name: test
+      run: |
+        ls -la
+        mkdir -p cache-folder1
+        f=cache-folder1/file.txt
+        [ -f "$f" ] && counter="`cat "$f"`" || counter=0
+        ((counter+=1))
+        echo "counter: $counter"
+        echo "$counter" > "$f"
+    - name: Save counter
+      id: cache-counter-save
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          cache-folder1
+          cache-folder2
+        key: ${{ steps.cache-counter-restore.outputs.cache-primary-key }}
