@@ -19,7 +19,8 @@ jobs:
         path: |
           cache-folder1
           cache-folder2
-        key: counter-key
+        restore-keys: |
+          counter-key-
     - name: test
       run: |
         ls -la
@@ -36,4 +37,4 @@ jobs:
         path: |
           cache-folder1
           cache-folder2
-        key: ${{ steps.cache-counter-restore.outputs.cache-primary-key }}
+        key: counter-key-${{ github.run_id }}
