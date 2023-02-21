@@ -19,6 +19,7 @@ jobs:
         path: |
           cache-folder1
           cache-folder2
+        key: ignore
         restore-keys: |
           counter-key-
     - name: test
